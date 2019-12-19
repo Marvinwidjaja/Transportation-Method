@@ -27,12 +27,12 @@ int main()
     int m,n;
     int stocknumber[MAX];
     int numofdelivered[MAX];
-    int cost[MAX][MAX];
+    int cost[MAX][MAX]={0};
     int sum = 0;
     int temp_demand[MAX]={0};
     int temp_source[MAX]={0};
     int sum_of_source,sum_of_delivered;
-    int allocation[MAX][MAX];
+    int allocation[MAX][MAX]={0};
     int no_of_allocation=0;
     
     cout<<"Number of rows and columns:";
