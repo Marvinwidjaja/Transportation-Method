@@ -29,9 +29,9 @@ int main()
     int numofdelivered[MAX];
     int cost[MAX][MAX];
     int sum = 0;
-    int temp_requered[MAX]={0};
-    int temp_capacity[MAX]={0};
-    int sum_of_cap,sum_of_req;
+    int temp_demand[MAX]={0};
+    int temp_source[MAX]={0};
+    int sum_of_source,sum_of_delivered;
     int allocation[MAX][MAX];
     int no_of_allocation=0;
     
@@ -68,70 +68,70 @@ int main()
     for(int j=0;j<n;j++)
         cout<<numofdelivered[j]<<"\t";
     
-
-
-    for(int i=0,j=0;(i<m&&j<n);)
-    {
-        if (stocknumber[i]<numofdelivered[j])
-        {
-        sum+=cost[i][j]*stocknumber[i];
-        numofdelivered[j]-=stocknumber[i];
-        i++;
-        }
-        else
-            if(stocknumber[i]>numofdelivered[j])
-            { sum+=cost[i][j]*numofdelivered[j];
-                stocknumber[i]-=numofdelivered[j];
-                j++;
-            }
-            else
-                if(stocknumber[i]==numofdelivered[j])
-            {
-                        sum+=cost[i][j]*numofdelivered[j];
-                        i++;
-                        j++;
-                }
-}
-
-cout<<"\n\nMinimum transportation cost:"<<sum;
+//
+//
+//    for(int i=0,j=0;(i<m&&j<n);)
+//    {
+//        if (stocknumber[i]<numofdelivered[j])
+//        {
+//        sum+=cost[i][j]*stocknumber[i];
+//        numofdelivered[j]-=stocknumber[i];
+//        i++;
+//        }
+//        else
+//            if(stocknumber[i]>numofdelivered[j])
+//            { sum+=cost[i][j]*numofdelivered[j];
+//                stocknumber[i]-=numofdelivered[j];
+//                j++;
+//            }
+//            else
+//                if(stocknumber[i]==numofdelivered[j])
+//            {
+//                        sum+=cost[i][j]*numofdelivered[j];
+//                        i++;
+//                        j++;
+//                }
+//}
+//
+//cout<<"\n\nMinimum transportation cost:"<<sum;
 
 int i=0,j=0;
 int k=0;
-sum_of_cap=getTotal(stocknumber,m);
-sum_of_req=getTotal(numofdelivered,n);
-if(sum_of_cap!=sum_of_req){
-    if(sum_of_cap>sum_of_req){
+sum_of_source=getTotal(stocknumber,m);
+sum_of_delivered=getTotal(numofdelivered,n);
+if(sum_of_source!=sum_of_delivered){
+    if(sum_of_source>sum_of_delivered){
         for(j=0;j<m;j++)
             cost[j][n]=0;
-        numofdelivered[m]=sum_of_cap-sum_of_req;
+        numofdelivered[m]=sum_of_source-sum_of_delivered;
         n++;
     }
     else{
         for(j=0;j<n;j++)
             cost[m][j]=0;
-        stocknumber[m]=sum_of_req-sum_of_cap;
+        stocknumber[m]=sum_of_delivered-sum_of_source;
         n++;
     }
 }
 i=j=0;
-arrayCopy(0,m,stocknumber,0,temp_capacity);
-arrayCopy(0,n,numofdelivered,0,temp_requered);
-while(!checkValue(temp_capacity,m) || !checkValue(temp_requered,n)){
-    if(temp_capacity[i]>temp_requered[j]){
-        allocation[i][j]=temp_requered[j];
-        temp_capacity[i]-=temp_requered[j];
-        temp_requered[j]=0;
+arrayCopy(0,m,stocknumber,0,temp_source);
+arrayCopy(0,n,numofdelivered,0,temp_demand);
+while(!checkValue(temp_source,m) || !checkValue(temp_demand,n)){
+    if(temp_source[i]>temp_demand[j]){
+        allocation[i][j]=temp_demand[j];
+        temp_source[i]-=temp_demand[j];
+        temp_demand[j]=0;
         j++;
     }
-    else if(temp_capacity[i]<temp_requered[j]){
-        allocation[i][j]=temp_capacity[i];
-        temp_requered[j]-=temp_capacity[i];
-        temp_capacity[i]=0;
+    else if(temp_source[i]<temp_demand[j]){
+        allocation[i][j]=temp_source[i];
+        temp_demand[j]-=temp_source[i];
+        temp_source[i]=0;
         i++;
     }
     else{
-        allocation[i][j]=temp_capacity[i];
-        temp_capacity[i]=temp_requered[j]=0;
+        allocation[i][j]=temp_source[i];
+        temp_source[i]=temp_demand[j]=0;
         i++;
         j++;
     }
