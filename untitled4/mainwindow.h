@@ -29,6 +29,5 @@ public:
     QPushButton *pushButton;
     QLineEdit *lineEdit;
     QLineEdit *lineEdit_2;
-    QPushButton *button1;
 };
 #endif // MAINWINDOW_H

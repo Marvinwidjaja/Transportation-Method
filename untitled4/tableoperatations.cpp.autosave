@@ -115,68 +115,6 @@ void tableoperatations::calculate()
         }
     }
 
-//    for(int i=0,j=0;(i<a1&&j<b1);)
-//    {
-//        if (source[i]<destination[j])
-//        {
-//            x[i][j]=cost[i][j]*source[i];
-//            destination[j]-=source[i];
-//            i++;
-//        }
-//        else
-//            if(source[i]>destination[j])
-//            {
-//                x[i][j]=cost[i][j]*source[j];
-//                source[i]-=destination[j];
-//                j++;
-//            }
-//            else
-//                if(source[i]==destination[j])
-//            {
-//                        x[i][j]=cost[i][j]*destination[j];
-//                        i++;
-//                        j++;
-//                }
-//}
-
-//        for(int i=0 , j=0;(i<a1 && j< b1);)
-//        {
-//            if (source[i]<destination[j])
-//            {
-//                sum+= cost[i][j]*source[i];
-//              destination[j] = destination[j] - source[i];
-//               i++;
-//            }
-//            else if(source[i] >= destination[j])
-//            {
-//                sum+= cost[i][j] * destination[j];
-//                source[i] = source[i] - destination[j];
-//                j++;
-//            }
-//        }
-//    for(int i=0,j=0;(i<a1&&j<b1);)
-//    {
-//        if (source[i]<destination[j])
-//        {
-//        sum+=cost[i][j]*source[i];
-//        destination[j]-=source[i];
-//        i++;
-//        }
-//        else
-//            if(source[i]>destination[j])
-//            { sum+=cost[i][j]*destination[j];
-//                source[i]-=destination[j];
-//                j++;
-//            }
-//            else
-//                if(source[i]==destination[j])
-//            {
-//                        sum+=cost[i][j]*destination[j];
-//                        i++;
-//                        j++;
-//                }
-//}
-
     for(int i=0;i<a1;i++)
      {
       for(int j=0;j<b1;j++)

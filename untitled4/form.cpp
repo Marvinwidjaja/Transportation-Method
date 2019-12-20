@@ -20,10 +20,6 @@ void Form::on_pushButton_clicked()
 {
     QString _nrows = ui->lineEdit->text();
     QString _ncolumns = ui->lineEdit_2->text();
-
-//    nrows = ui->lineEdit->text().toInt();
-//    ncolumns = ui->lineEdit_2->text().toInt();
-
     nrows = _nrows.toInt();
     ncolumns = _ncolumns.toInt();
 

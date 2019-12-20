@@ -8,6 +8,8 @@
 #include<vector>
 #include<QMessageBox>
 #include<QTextEdit>
+#include<string>
+enum boolean{FALSE,TRUE};
 
 class tableoperatations : public QDialog {
     Q_OBJECT
@@ -22,8 +24,8 @@ private slots:
     void calculate();
 
 private:
-    QTableWidget *table;
-    QPushButton *button1;
+    QTableWidget *input_table;
+    QPushButton *calc_button;
     QTextEdit *result;
 
 };
