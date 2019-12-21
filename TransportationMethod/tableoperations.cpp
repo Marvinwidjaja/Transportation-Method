@@ -1,0 +1,139 @@
+#include "tableoperations.h"
+#include <cmath>
+#include<form.h>
+#include<QPushButton>
+#include<QMessageBox>
+#include<QString>
+#include<vector>
+#include<QLabel>
+#include<QTextEdit>
+#include<string>
+#include<iostream>
+#include <algorithm>
+#include <iterator>
+#include<QtDebug>
+#include<QDebug>
+#define MAX 100
+tableoperations::tableoperations(QWidget *parent, int a, int b) : QDialog(parent)
+{
+    input_table = new QTableWidget;
+    input_table->setRowCount(a+1);
+    input_table->setColumnCount(b+1);
+    for(int i=0;i<b;++i){
+        input_table->setHorizontalHeaderItem(i, new QTableWidgetItem);
+        Q_ASSUME(input_table->model()->setHeaderData(i,Qt::Horizontal,QStringLiteral("D%1").arg(i+1)));
+    }
+    for(int i=0;i<a;++i){
+        input_table->setVerticalHeaderItem(i, new QTableWidgetItem);
+        Q_ASSUME(input_table->model()->setHeaderData(i,Qt::Vertical,QStringLiteral("S%1").arg(i+1)));
+    }
+    for (int i = 0; i < input_table->rowCount(); i++){
+        for (int j = 0; j < input_table->columnCount(); j++) {
+            QTableWidgetItem *item = new
+            QTableWidgetItem(tr("-"));
+            input_table->setItem(i, j, item);
+        }
+    }
+    input_table->setVerticalHeaderItem(a, new QTableWidgetItem);
+    input_table->model()->setHeaderData(a,Qt::Vertical,QStringLiteral("Demand"));
+    input_table->setHorizontalHeaderItem(b, new QTableWidgetItem);
+    input_table->model()->setHeaderData(b,Qt::Horizontal,QStringLiteral("Supply"));
+    input_table->removeCellWidget(a,b);
+    calc_button = new QPushButton("Calculate", this);
+    connect(calc_button, SIGNAL (clicked()),this, SLOT (calculate()));
+    result=new QTextEdit("");
+    QHBoxLayout *layout = new QHBoxLayout;
+    layout->addWidget(input_table);
+    layout->addWidget(calc_button);
+    layout->addWidget(result);
+    setLayout(layout);
+}
+
+std::vector<std::vector<int>>  tableoperations::getcost()
+{
+    std::vector<std::vector <int>> cost;
+    for(int i=0;i<this->input_table->rowCount()-1;i++)
+    {
+        std::vector <int> row;
+        for(int j=0;j<this->input_table->columnCount()-1;j++)
+        {
+            row.push_back(this->input_table->item(i, j)->text().toInt());
+        }
+        cost.push_back(row);
+    }
+    return cost;
+}
+
+std::vector<int> tableoperations::getdestination()
+{
+    std::vector <int> destination;
+    int row = this->input_table->rowCount()-1 ;
+    for(int i=0;i<this->input_table->columnCount()-1 ;i++)
+    {
+        destination.push_back(this->input_table->item(row, i)->text().toInt());
+    }
+    return destination;
+}
+
+std::vector<int> tableoperations::getsource()
+{
+    std::vector <int> source;
+    int column = this->input_table->columnCount()-1;
+    for(int j=0;j<this->input_table->rowCount()-1;j++)
+    {
+        source.push_back(this->input_table->item(j, column)->text().toInt());
+    }
+    return source;
+}
+
+void tableoperations::calculate()
+{
+    int sum = 0;
+    std::vector<std::vector<int>> cost = getcost();
+    int a = input_table->rowCount();
+    int a1 =a-1;
+    int b = input_table->columnCount();
+    int b1 = b-1;
+    int x[MAX][MAX] = {0};
+    QTableWidget *output_table = new QTableWidget(a1, b1);
+    std::vector<int> source = getsource();
+    std::vector<int> destination = getdestination();
+
+    for(int i=0 , j=0;(i<a1 && j< b1);)
+    {
+        if (source[i]<destination[j])
+        {
+            x[i][j] = cost[i][j]*source[i];
+          destination[j] = destination[j] - source[i];
+           i++;
+        }
+        else if(source[i] >= destination[j])
+        {
+            x[i][j] = cost[i][j] * destination[j];
+            source[i] = source[i] - destination[j];
+            j++;
+        }
+    }
+    for(int i=0;i<a;i++)
+     {
+      for(int j=0;j<b;j++)
+       {
+         sum = sum + x[i][j];
+       }
+       }
+     for (int r = 0; r <= a1; r++) {
+         for (int c = 0; c <= b1; c++) {
+              QTableWidgetItem *item = new QTableWidgetItem(tr("%1").arg(x[r][c]));
+              output_table->setItem(r, c, item);
+
+         }
+     }
+     output_table->show();
+
+     QString s = QString::number(sum);
+     QString text = QString("Minimum cost is: %1 ").arg(s);
+     result->setText(text);
+}
+tableoperations::~tableoperations() {
+    delete input_table;
+}
